@@ -5,8 +5,7 @@ What is Kafka? Learn here [Kafka Visualizaiton](https://softwaremill.com/kafka-v
 # Architechture
 
 ![Alt text](architechture.jpg "Architechture")
-
+Image from [here](https://github.com/darshilparmar/stock-market-kafka-data-engineering-project)
 # Steps
-1. [Installing Kafka on AWS EC2](#section-4)
+1. Installing Kafka on AWS EC2
 
-# 1. Installing Kafka on AWS EC2
