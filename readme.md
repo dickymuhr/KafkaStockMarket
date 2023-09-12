@@ -7,12 +7,12 @@ What is Kafka? Learn here [Kafka Visualizaiton](https://softwaremill.com/kafka-v
 ![Alt text](architechture.jpg "Architechture")
 Image from [here](https://github.com/darshilparmar/stock-market-kafka-data-engineering-project)
 # Steps
-1. [Installing Kafka on AWS EC2](#installing-kafka-on-aws-ec2)
+**1. [Installing Kafka on AWS EC2](#installing-kafka-on-aws-ec2)**
 
 # Installing Kafka on AWS EC2
-1. Launch new AWS EC2 instance
+**1. Launch new AWS EC2 instance**
 - Named it "kafka-stock-market-project". Choose Ubuntu AMI. Don't forget to create key pair and save it 
-2. Login with SSH client
+**2. Login with SSH client**
 - Go to folder where you save .pem file. Then change the permision to read-only
 ```
     chmod 400 kafka-stock-market-project.pem
@@ -23,19 +23,19 @@ Image from [here](https://github.com/darshilparmar/stock-market-kafka-data-engin
 ```
     ssh -i "kafka-stock-market-project.pem" ec2-instance
 ```
-3. Download Apache Kafka
+**3. Download Apache Kafka**
 - Check latest kafka version [here](https://kafka.apache.org/downloads)
 ```
     wget https://downloads.apache.org/kafka/3.5.1/kafka_2.13-3.5.1.tgz
     tar -xvf kafka_2.13-3.5.1.tgz
 ```
-4. Install Java
+**4. Install Java**
 ```
     sudo apt-get update
     sudo apt-get install openjdk-8-jdk
     java -version
 ```
-5. Change Advertised Listener Config
+**5. Change Advertised Listener Config**
 ```
     cd kafka_2.13-3.5.1
     sudo nano config/server.properties
@@ -45,11 +45,11 @@ Image from [here](https://github.com/darshilparmar/stock-market-kafka-data-engin
     advertised.listeners=PLAINTEXT://your.host.name:9092
 ```
 - This advertised.listener used by other broker (ex: local PC) to be address which is used to communicate with Kafka
-6. Start Zookeeper
+**6. Start Zookeeper**
 ```
     bin/zookeeper-server-start.sh config/zookeeper.properties
 ```
-7. Start Kafka
+**7. Start Kafka**
 - Open new terminal (since the first one running Zookeeper), then also login with SSH. Increase the memory first (because we only use one instance)
 ```
     cd kafka_2.13-3.5.1
@@ -62,7 +62,7 @@ Image from [here](https://github.com/darshilparmar/stock-market-kafka-data-engin
     bin/kafka-server-stop.sh
     bin/zookeeper-server-stop.sh
 ```
-8. Edit Security Setting
+**8. Edit Security Setting**
 - This step allow request from local PC to AWS EC2 instance (not best practice for security)
 - On your AWS EC2 instance go to Security -> Click on Security Group -> Edit inbound rules -> Add rule
     - Type: All traffic
