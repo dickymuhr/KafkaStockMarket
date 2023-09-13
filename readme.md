@@ -8,6 +8,8 @@ What is Kafka? Learn here [Kafka Visualizaiton](https://softwaremill.com/kafka-v
 Image from [here](https://github.com/darshilparmar/stock-market-kafka-data-engineering-project)
 # Steps
 **1. [Installing Kafka on AWS EC2](#installing-kafka-on-aws-ec2)**
+**2. [Create Producer & Consumer](#make-producer--consumer)**
+
 
 # Installing Kafka on AWS EC2
 **1. Launch new AWS EC2 instance**
@@ -68,3 +70,9 @@ Image from [here](https://github.com/darshilparmar/stock-market-kafka-data-engin
 - On your AWS EC2 instance go to Security -> Click on Security Group -> Edit inbound rules -> Add rule
     - Type: All traffic
     - Source: My IP
+
+# Create Producer & Consumer
+On local PC, install Kafka Python library
+```
+    pip install kafka-python
+```
