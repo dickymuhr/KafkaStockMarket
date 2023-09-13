@@ -51,7 +51,9 @@ Image from [here](https://github.com/darshilparmar/stock-market-kafka-data-engin
     bin/zookeeper-server-start.sh config/zookeeper.properties &
 ```
 **7. Start Kafka**
+```
     export KAFKA_HEAP_OPTS="-Xmx256M -Xms128M"
+```
 ```
     bin/kafka-server-start.sh config/server.properties &
 ```
