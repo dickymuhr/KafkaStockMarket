@@ -45,16 +45,14 @@ Image from [here](https://github.com/darshilparmar/stock-market-kafka-data-engin
     advertised.listeners=PLAINTEXT://your.host.name:9092
 ```
 - This advertised.listener used by other broker (ex: local PC) to be address which is used to communicate with Kafka
+
 **6. Start Zookeeper**
 ```
-    bin/zookeeper-server-start.sh config/zookeeper.properties
+    bin/zookeeper-server-start.sh config/zookeeper.properties &
 ```
 **7. Start Kafka**
-- Open new terminal (since the first one running Zookeeper), then also login with SSH. Increase the memory first (because we only use one instance)
-```
-    cd kafka_2.13-3.5.1
     export KAFKA_HEAP_OPTS="-Xmx256M -Xms128M"
-    bin/kafka-server-start.sh config/server.properties
+    bin/kafka-server-start.sh config/server.properties &
 ```
 
 - In case you wanna stop the server, use this command
