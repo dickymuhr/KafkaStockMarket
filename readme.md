@@ -1,6 +1,6 @@
 # Kafka Stock Market Project
 Project based on Darshil Parmar Youtube Video [Stock Market Real-Time Data Analysis Using Kafka](https://www.youtube.com/watch?v=KerNf0NANMo).
-Here we will create Kafka Streaming project that produce dummy data from .csv file that contains stock market data, consume it to the AWS S3 Bucket. Then query it in AWS Athena.
+Here we will create Kafka Streaming project that produce dummy data from .csv file that contains stock market data, consume it to the Amazon S3 Bucket. Then query it in Amazon Athena.
 
 What is Kafka? Learn here [Kafka Visualizaiton](https://softwaremill.com/kafka-visualisation/)
 # Architechture
@@ -140,7 +140,7 @@ aws --version
 aws configure
 ```
 
-**2. Create AWS S3 Bucket**
+**2. Create Amazon S3 Bucket**
 - Create S3 bucket with unique name on AWS
 - Install S3 library on local machine
 ```bash
@@ -183,7 +183,7 @@ aws configure
 - Now the data is placed in S3 bucket, we can query it in **Amazon Athena** but first we should add its metadata to **Amazon Glue Data Catalog**
 
 **1. Setup The Amazon Glue Crawler**
-- This step will crawl the entire S3 file schema. So we can directly do query on top of it using AWS Athena.
+- This step will crawl the entire S3 file schema. So we can directly do query on top of it using Amazon Athena.
 - Add new crawler
     - AWS Glue -> Data Catalog -> Crawlers -> Create crawler -> Named it -> Add data source -> Chose your S3 bucket path (with closing slash "/") ->
     - Set IAM Options (create new) -> Amazon IAM -> Roles -> Create role -> Type: AWS Service and Service: Glue -> Add *AdministratorAccess* -> Select created IAM role ->
