@@ -17,34 +17,34 @@ Image from [here](https://github.com/darshilparmar/stock-market-kafka-data-engin
 - Named it "kafka-stock-market-project". Choose Ubuntu AMI. Don't forget to create key pair and save it 
 **2. Login with SSH client**
 - Go to folder where you save .pem file. Then change the permision to read-only
-```
+```bash
     chmod 400 kafka-stock-market-project.pem
 ```
 
 - Then login with SSH, change ec2-instance with your own instance
 
-```
+```bash
     ssh -i "kafka-stock-market-project.pem" ec2-instance
 ```
 **3. Download Apache Kafka**
 - Check latest kafka version [here](https://kafka.apache.org/downloads)
-```
+```bash
     wget https://downloads.apache.org/kafka/3.5.1/kafka_2.13-3.5.1.tgz
     tar -xvf kafka_2.13-3.5.1.tgz
 ```
 **4. Install Java**
-```
+```bash
     sudo apt-get update
     sudo apt-get install openjdk-8-jdk
     java -version
 ```
 **5. Change Listener Config**
-```
+```bash
     cd kafka_2.13-3.5.1
     sudo nano config/server.properties
 ```
 - Change this settings, it configure where the client should communicate (within or outside EC2)
-```
+```bash
     listeners=INTERNAL://0.0.0.0:9092,EXTERNAL://0.0.0.0:9093
     advertised.listeners=INTERNAL://172.31.47.74:9092,EXTERNAL://13.51.196.19:9093
     listener.security.protocol.map=INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT
@@ -57,19 +57,19 @@ Image from [here](https://github.com/darshilparmar/stock-market-kafka-data-engin
 - This **listener** configuration determines on which network interfaces and ports the Kafka broker will accept incoming connections.
 
 **6. Start Zookeeper**
-```
+```bash
     bin/zookeeper-server-start.sh config/zookeeper.properties 
 ```
 **7. Start Kafka**
-```
+```bash
     export KAFKA_HEAP_OPTS="-Xmx256M -Xms128M"
 ```
-```
+```bash
     bin/kafka-server-start.sh config/server.properties 
 ```
 
 - In case you wanna stop the server, use this command
-```
+```bash
     bin/kafka-server-stop.sh
     bin/zookeeper-server-stop.sh
 ```
@@ -80,24 +80,24 @@ Image from [here](https://github.com/darshilparmar/stock-market-kafka-data-engin
     - Source: My IP
 
 **8. Create Topic**
-```
+```bash
     bin/kafka-topics.sh --create --topic demo_testing --bootstrap-server localhost:9092 --replication-factor 1 --partitions 1
 ```
 - Or it will automatically created when Kafka Producer send message to the Kafka broker
 
 - To List topics
-```
+```bash
     bin/kafka-topics.sh --bootstrap-server localhost:9092 --list
 ```
 
 # Create Producer & Consumer
 **1. On local PC, install Kafka Python library**
-```
+```bash
     pip install kafka-python
 ```
 
 **2. Create KafkaProducer.py to make dummy producer using csv stock market data**
-```
+```python
     import pandas as pd
     from kafka import KafkaProducer
     from time import sleep
