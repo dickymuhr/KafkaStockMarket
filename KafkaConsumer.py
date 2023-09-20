@@ -15,3 +15,4 @@ s3 = S3FileSystem()
 for count, i in enumerate(consumer):
     with s3.open("s3://kafka-stock-market-diccode/stock_market_{}.json".format(count), 'w') as file:
         json.dump(i.value,file)
+        print(f"uploading {i.value}")

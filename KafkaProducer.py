@@ -13,4 +13,5 @@ df = pd.read_csv('indexProcessed.csv')
 while True:
     stock_dict = df.sample(1).to_dict(orient="records")[0]
     producer.send("stock", value=stock_dict)
+    print(f"sending {stock_dict}")
     sleep(5)

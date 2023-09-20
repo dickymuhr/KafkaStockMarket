@@ -10,6 +10,8 @@ Image from [here](https://github.com/darshilparmar/stock-market-kafka-data-engin
 **1. [Installing Kafka on AWS EC2](#installing-kafka-on-aws-ec2)**
 **2. [Create Producer](#create-producer)**
 **3. [Create Consumer](#create-consumer)**
+**4. [Running Producer and Consumer](#running-producer-and-consumer)**
+**5. [Setup Amazon Glue and Athena](#setup-amazon-glue-and-athena)**
 
 
 # Installing Kafka on AWS EC2
@@ -160,3 +162,36 @@ aws configure
         with s3.open("s3://your-bucket-name/stock_market_{}.json".format(count), 'w') as file:
             json.dump(i.value,file)
 ```
+
+# Running Producer and Consumer
+- Run both script in different terminal. Dummy stock data will be produced and json data will be uploaded to S3 bucket by the consumer
+```bash
+    python3 KafkaProducer.py
+```
+```bash
+    python3 KafkaConsumer.py
+```
+- The result will look like this (if printed in console)
+<img src="running_producer_consumer.png" alt="Producer-Consumer" width="900"/>
+
+# Setup Amazon Glue and Athena
+- Now the data is placed in S3 bucket, we can query it in **Amazon Athena** but first we should add its metadata to **Amazon Glue Data Catalog**
+
+**1. Setup The Amazon Glue Crawler**
+- This step will crawl the entire S3 file schema. So we can directly do query on top of it using AWS Athena.
+- Add new crawler
+    - AWS Glue -> Data Catalog -> Crawlers -> Create crawler -> Named it -> Add data source -> Chose your S3 bucket path (with closing slash "/") ->
+    - Set IAM Options (create new) -> Amazon IAM -> Roles -> Create role -> Type: AWS Service and Service: Glue -> Add *AdministratorAccess* -> Select created IAM role ->
+    - Add database -> Create new -> Select created database
+- Select Crawler & run it
+
+**2. Setup The Amazon Athena**
+- Go to query editor
+- Go to settings -> manage -> add new extra S3 bucket path for temporary query (if not exist, create one)
+- Select previous created database and **query it**!
+```SQL
+    SELECT * FROM "stock_market_kafka"."kafka_stock_market_diccode" limit 10;
+```
+
+Voila! Here is our data
+<img src="aws-athena.png" alt="Producer-Consumer" width="900"/>
