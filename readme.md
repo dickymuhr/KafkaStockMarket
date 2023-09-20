@@ -43,7 +43,7 @@ Image from [here](https://github.com/darshilparmar/stock-market-kafka-data-engin
     cd kafka_2.13-3.5.1
     sudo nano config/server.properties
 ```
-- Change this two setting, it configure where the client should communicate (within or outside EC2)
+- Change this settings, it configure where the client should communicate (within or outside EC2)
 ```
     listeners=INTERNAL://0.0.0.0:9092,EXTERNAL://0.0.0.0:9093
     advertised.listeners=INTERNAL://172.31.47.74:9092,EXTERNAL://13.51.196.19:9093
@@ -51,6 +51,10 @@ Image from [here](https://github.com/darshilparmar/stock-market-kafka-data-engin
     inter.broker.listener.name=INTERNAL
 ```
 - This advertised.listener used by other broker (ex: local PC) to be address which is used to communicate with Kafka
+
+**Side Note**
+- In general, the address in the **advertised.listeners** configuration is the one Kafka uses for all outbound communications and the one it tells clients and other brokers to use for inbound communications.
+- This **listener** configuration determines on which network interfaces and ports the Kafka broker will accept incoming connections.
 
 **6. Start Zookeeper**
 ```
@@ -84,10 +88,6 @@ Image from [here](https://github.com/darshilparmar/stock-market-kafka-data-engin
 ```
     bin/kafka-topics.sh --bootstrap-server localhost:9092 --list
 ```
-
-**Side Note**
-- In general, the address in the **advertised.listeners** configuration is the one Kafka uses for all outbound communications and the one it tells clients and other brokers to use for inbound communications.
-- This **listener** configuration determines on which network interfaces and ports the Kafka broker will accept incoming connections.
 
 # Create Producer & Consumer
 On local PC, install Kafka Python library
