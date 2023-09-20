@@ -83,6 +83,7 @@ Image from [here](https://github.com/darshilparmar/stock-market-kafka-data-engin
 ```
     bin/kafka-topics.sh --create --topic demo_testing --bootstrap-server localhost:9092 --replication-factor 1 --partitions 1
 ```
+- Or it will automatically created when Kafka Producer send message to the Kafka broker
 
 - To List topics
 ```
