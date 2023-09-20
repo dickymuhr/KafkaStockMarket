@@ -8,8 +8,8 @@ What is Kafka? Learn here [Kafka Visualizaiton](https://softwaremill.com/kafka-v
 Image from [here](https://github.com/darshilparmar/stock-market-kafka-data-engineering-project)
 # Steps
 **1. [Installing Kafka on AWS EC2](#installing-kafka-on-aws-ec2)**
-
-**2. [Create Producer & Consumer](#make-producer--consumer)**
+**2. [Create Producer](#create-producer)**
+**3. [Create Consumer](#create-consumer)**
 
 
 # Installing Kafka on AWS EC2
@@ -90,13 +90,14 @@ Image from [here](https://github.com/darshilparmar/stock-market-kafka-data-engin
     bin/kafka-topics.sh --bootstrap-server localhost:9092 --list
 ```
 
-# Create Producer & Consumer
+# Create Producer
 **1. On local PC, install Kafka Python library**
 ```bash
     pip install kafka-python
 ```
 
 **2. Create KafkaProducer.py to make dummy producer using csv stock market data**
+- Don't forget to change **bootstrap_servers** to your external **advertise.listener**
 ```python
     import pandas as pd
     from kafka import KafkaProducer
@@ -114,4 +115,48 @@ Image from [here](https://github.com/darshilparmar/stock-market-kafka-data-engin
         stock_dict = df.sample(1).to_dict(orient="records")[0]
         producer.send("stock", value=stock_dict)
         sleep(1)
+```
+
+# Create Consumer
+**1. Configure AWS IAM on local machine**
+- Go to IAM -> Users -> Create user -> Attach policies directly -> Add *AdministratorAccess* -> Next -> Create User
+- On the created user, create *access key* and save the .csv file
+- Install AWS CLI
+```bash
+curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+unzip awscliv2.zip
+sudo ./aws/install
+aws --version
+```
+- Run 'aws configure' and insert aws *access key* from downloaded .csv file
+```bash
+aws configure
+```
+
+**2. Create AWS S3 Bucket**
+- Create S3 bucket with unique name on AWS
+- Install S3 library on local machine
+```bash
+    pip install s3fs
+```
+**3. Create KafkaConsumer.py that consume data and send it to S3**
+- Don't forget to change **bootstrap_servers** to your external **advertise.listener**
+```python
+    from kafka import KafkaConsumer
+    from time import sleep
+    from json import dumps, loads
+    import json
+    from s3fs import S3FileSystem
+
+    consumer = KafkaConsumer(
+        'stock',
+        bootstrap_servers=['13.51.196.19:9093'],
+        value_deserializer = lambda x: loads(x.decode('utf-8'))
+    )
+
+    s3 = S3FileSystem()
+
+    for count, i in enumerate(consumer):
+        with s3.open("s3://your-bucket-name/stock_market_{}.json".format(count), 'w') as file:
+            json.dump(i.value,file)
 ```
