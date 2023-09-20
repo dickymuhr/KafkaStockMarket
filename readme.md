@@ -8,6 +8,7 @@ What is Kafka? Learn here [Kafka Visualizaiton](https://softwaremill.com/kafka-v
 Image from [here](https://github.com/darshilparmar/stock-market-kafka-data-engineering-project)
 # Steps
 **1. [Installing Kafka on AWS EC2](#installing-kafka-on-aws-ec2)**
+
 **2. [Create Producer & Consumer](#make-producer--consumer)**
 
 
@@ -37,27 +38,30 @@ Image from [here](https://github.com/darshilparmar/stock-market-kafka-data-engin
     sudo apt-get install openjdk-8-jdk
     java -version
 ```
-**5. Change Advertised Listener Config**
+**5. Change Listener Config**
 ```
     cd kafka_2.13-3.5.1
     sudo nano config/server.properties
 ```
-- Change hostname to be Public IPv4 address of the AWS EC2 instance so that Kafka will expose itself through advertise.listener host and then other outside broker can communicate with it
+- Change this two setting, it configure where the client should communicate (within or outside EC2)
 ```
-    advertised.listeners=PLAINTEXT://your.host.name:9092
+    listeners=INTERNAL://0.0.0.0:9092,EXTERNAL://0.0.0.0:9093
+    advertised.listeners=INTERNAL://172.31.47.74:9092,EXTERNAL://13.51.196.19:9093
+    listener.security.protocol.map=INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT
+    inter.broker.listener.name=INTERNAL
 ```
 - This advertised.listener used by other broker (ex: local PC) to be address which is used to communicate with Kafka
 
 **6. Start Zookeeper**
 ```
-    bin/zookeeper-server-start.sh config/zookeeper.properties &
+    bin/zookeeper-server-start.sh config/zookeeper.properties 
 ```
 **7. Start Kafka**
 ```
     export KAFKA_HEAP_OPTS="-Xmx256M -Xms128M"
 ```
 ```
-    bin/kafka-server-start.sh config/server.properties &
+    bin/kafka-server-start.sh config/server.properties 
 ```
 
 - In case you wanna stop the server, use this command
@@ -66,10 +70,24 @@ Image from [here](https://github.com/darshilparmar/stock-market-kafka-data-engin
     bin/zookeeper-server-stop.sh
 ```
 **8. Edit Security Setting**
-- This step allow request from local PC to AWS EC2 instance (not best practice for security)
+- This step allow all request from local PC to AWS EC2 instance (not best practice for security)
 - On your AWS EC2 instance go to Security -> Click on Security Group -> Edit inbound rules -> Add rule
     - Type: All traffic
     - Source: My IP
+
+**8. Create Topic**
+```
+    bin/kafka-topics.sh --create --topic demo_testing --bootstrap-server localhost:9092 --replication-factor 1 --partitions 1
+```
+
+- To List topics
+```
+    bin/kafka-topics.sh --bootstrap-server localhost:9092 --list
+```
+
+**Side Note**
+- In general, the address in the **advertised.listeners** configuration is the one Kafka uses for all outbound communications and the one it tells clients and other brokers to use for inbound communications.
+- This **listener** configuration determines on which network interfaces and ports the Kafka broker will accept incoming connections.
 
 # Create Producer & Consumer
 On local PC, install Kafka Python library
