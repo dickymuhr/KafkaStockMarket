@@ -194,4 +194,5 @@ aws configure
 ```
 
 Voila! Here is our data
+
 <img src="aws-athena.png" alt="Producer-Consumer" width="900"/>
