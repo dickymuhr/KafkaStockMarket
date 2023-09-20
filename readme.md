@@ -8,9 +8,13 @@ What is Kafka? Learn here [Kafka Visualizaiton](https://softwaremill.com/kafka-v
 Image from [here](https://github.com/darshilparmar/stock-market-kafka-data-engineering-project)
 # Steps
 **1. [Installing Kafka on AWS EC2](#installing-kafka-on-aws-ec2)**
+
 **2. [Create Producer](#create-producer)**
+
 **3. [Create Consumer](#create-consumer)**
+
 **4. [Running Producer and Consumer](#running-producer-and-consumer)**
+
 **5. [Setup Amazon Glue and Athena](#setup-amazon-glue-and-athena)**
 
 
