@@ -5,9 +5,9 @@ import time
 import finnhub
 
 # Define producer
-# producer = KafkaProducer(bootstrap_servers=['13.51.196.19:9093'],
-#                          value_serializer = lambda x: json.dumps(x).encode('utf-8'))
-#                         # why do we need utf-8 encoding? because kafka need byte string, not regular string
+producer = KafkaProducer(bootstrap_servers=['34.101.144.6:9093'],
+                         value_serializer = lambda x: json.dumps(x).encode('utf-8'))
+                        # why do we need utf-8 encoding? because kafka need byte string, not regular string
 
 # Define finnhub client
 load_dotenv(dotenv_path='key/finnhub.env') # Load the .env file
@@ -15,16 +15,14 @@ api_key = os.getenv('FINNHUB_API_KEY') # Get the API key
 finnhub_client = finnhub.Client(api_key=api_key)
 
 # Define request function
-def getStock(stock_list):
-    stocks = {"data": []}
-    for stock in stock_list:
-        try:
-            stock_quote = finnhub_client.quote(stock)
-            stock_quote["symbol"] = stock
-            stocks["data"].append(stock_quote)
-        except Exception as e:
-            print(f"Error fetching quote for {stock}: {e}")
-    return stocks
+def getStock(symbol):
+    stock_quote = {}
+    try:
+        stock_quote = finnhub_client.quote(symbol)
+        stock_quote["symbol"] = symbol
+    except Exception as e:
+        print(f"Error fetching quote for {symbol}: {e}")
+    return stock_quote
 
 # # Documentation here https://github.com/Finnhub-Stock-API/finnhub-python
 # The output print(finnhub_client.quote('AMZN')) will be like this
@@ -35,7 +33,11 @@ def getStock(stock_list):
 
 stock_symbols = ['NVDA', 'AMZN', 'GOOGL', 'MSFT']
 while True:
-    stock_dict = getStock(stock_symbols)
-    # producer.send("stock", value=stock_dict)
-    print(f"Sending: {json.dumps(stock_dict, indent=2)}")
-    time.sleep(5)
+    for symbol in stock_symbols:
+        try:
+            stock_dict = getStock(symbol)
+            producer.send("stock", value=stock_dict)
+            print(f"Sending: {json.dumps(stock_dict, indent=2)}")
+        except Exception as e:
+            print(f"Producer error: {e}")
+    time.sleep(60)
