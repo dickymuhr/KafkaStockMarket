@@ -1,6 +1,6 @@
 from kafka import KafkaConsumer
 from time import sleep
-from json 
+import json
 import json
 from google.cloud import storage
 
