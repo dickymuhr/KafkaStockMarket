@@ -153,6 +153,7 @@ while True:
 
 # Setup Google Cloud Storage
 The consumer will consume data that sent by producer, then upload the data to Google Cloud Storage.
+
 **1. Create GCS Bucket**
 - Select project, in the Console navigate to Google Cloud Storage
 - Go to Buckets then click "Create"
@@ -216,7 +217,7 @@ python3 KafkaProducer.py
 python3 KafkaConsumer.py
 ```
 
-Now the Producer will ingest data from the API, Kafka will take it and forward to Consumer, and then Consumer will dump the data to GCS.
+Now the Producer will ingest data from the API, Kafka will take it and forward to Consumer, and then Consumer will dump the data to GCS. Data will be streamed from API to GCS.
 
 # Query Using BigQuery
 Data that we dumped to GCS can be queryied using BigQuery, with `External Table`.
@@ -233,5 +234,6 @@ Here is the step to create External Table using Console:
     - **Schema**: Select Auto detect (for simplicity)
 
 **2. Query It!**
+
 We already have the table, then query it like usual table.
 ![Alt text](images/bigquery.png "BigQuery")
