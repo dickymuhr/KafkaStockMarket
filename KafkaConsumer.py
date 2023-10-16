@@ -7,7 +7,7 @@ from google.cloud import storage
 # Initialize consumer
 consumer = KafkaConsumer(
     'stock',
-    bootstrap_servers=['34.101.144.6:9093'],
+    bootstrap_servers=['34.101.49.216:9093'],
     value_deserializer = lambda x: json.loads(x.decode('utf-8'))
 )
 

@@ -5,7 +5,7 @@ import time
 import finnhub
 
 # Define producer
-producer = KafkaProducer(bootstrap_servers=['34.101.144.6:9093'],
+producer = KafkaProducer(bootstrap_servers=['34.101.49.216:9093'],
                          value_serializer = lambda x: json.dumps(x).encode('utf-8'))
                         # why do we need utf-8 encoding? because kafka need byte string, not regular string
 
